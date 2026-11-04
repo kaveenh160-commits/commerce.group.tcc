@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>කොමස් ගෲප් - Commerce Hub School Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2pdf CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Sinhala Google Font (Noto Sans Sinhala) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Sinhala', sans-serif;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+  <!-- Header / Navigation -->
+  <header class="gradient-bg text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('landing')">
+        <div class="bg-amber-400 text-slate-900 font-extrabold p-2.5 rounded-lg text-xl shadow-md">CH</div>
+        <div>
+          <h1 class="font-extrabold text-xl tracking-tight leading-none text-amber-300">කොමස් ගෲප්</h1>
+          <p class="text-xs text-slate-300 mt-1">Commerce Hub School Portal</p>
+        </div>
+      </div>
+
+      <!-- Auth Action Buttons -->
+      <div class="flex items-center gap-2" id="headerAuthNav">
+        <button onclick="switchView('landing')" class="px-3 py-1.5 text-xs font-semibold rounded bg-slate-800/60 hover:bg-slate-700 transition"><i class="fa-solid fa-house mr-1"></i> මුල් පිටුව</button>
+        <button onclick="openTeacherLoginModal()" class="px-3 py-1.5 text-xs font-semibold rounded bg-blue-600 hover:bg-blue-500 text-white transition"><i class="fa-solid fa-chalkboard-user mr-1"></i> ගුරු පිවිසුම</button>
+        <button onclick="openHodLoginModal()" class="px-3 py-1.5 text-xs font-semibold rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition"><i class="fa-solid fa-user-shield mr-1"></i> අංශ ප්‍රධාන</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Banner -->
+  <div id="globalNotification" class="hidden bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2 text-xs font-medium text-center"></div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+    <!-- 1. LANDING VIEW (HOME PAGE) -->
+    <section id="view-landing" class="block space-y-8">
+      <!-- Big Title Banner -->
+      <div class="text-center py-10 px-4 rounded-2xl gradient-bg text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10">
+          <span class="bg-amber-400/20 text-amber-300 text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3 border border-amber-400/30">වාණිජ අංශය - Commerce Hub</span>
+          <h1 class="text-4xl md:text-6xl font-black text-amber-300 tracking-wide mb-3 uppercase">කොමස් ගෲප්</h1>
+          <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto font-light">12 සහ 13 ශ්‍රේණිවල සිසුන් සඳහා වන සියලුම අධ්‍යාපන කළමනාකරණ කටයුතු එකම පද්ධතියකින්.</p>
+        </div>
+      </div>
+
+      <!-- Grade Selection -->
+      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
+        <h2 class="text-lg md:text-xl font-bold text-slate-800 text-center mb-6"><i class="fa-solid fa-graduation-cap text-blue-600 mr-2"></i>ඔබගේ ශ්‍රේණිය තෝරන්න</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <!-- Grade 12 Box -->
+          <div class="border-2 border-blue-100 rounded-xl p-5 hover:border-blue-500 transition bg-blue-50/30">
+            <h3 class="text-lg font-bold text-blue-900 mb-3 flex items-center justify-between">
+              <span><i class="fa-solid fa-layer-group text-blue-600 mr-2"></i>12 ශ්‍රේණිය</span>
+              <span class="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded">Grade 12</span>
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">ඔබගේ අදාළ පන්තිය තෝරා පිවිසෙන්න:</p>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="handleClassSelect('12-C1')" class="py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-sm shadow transition">12-C1</button>
+              <button onclick="handleClassSelect('12-C2')" class="py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-sm shadow transition">12-C2</button>
+              <button onclick="handleClassSelect('12-C3')" class="py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-sm shadow transition">12-C3</button>
+            </div>
+          </div>
+
+          <!-- Grade 13 Box -->
+          <div class="border-2 border-amber-100 rounded-xl p-5 hover:border-amber-500 transition bg-amber-50/30">
+            <h3 class="text-lg font-bold text-amber-900 mb-3 flex items-center justify-between">
+              <span><i class="fa-solid fa-layer-group text-amber-600 mr-2"></i>13 ශ්‍රේණිය</span>
+              <span class="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded">Grade 13</span>
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">ඔබගේ අදාළ පන්තිය තෝරා පිවිසෙන්න:</p>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="handleClassSelect('13-C1')" class="py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-sm shadow transition">13-C1</button>
+              <button onclick="handleClassSelect('13-C2')" class="py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-sm shadow transition">13-C2</button>
+              <button onclick="handleClassSelect('13-C3')" class="py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-sm shadow transition">13-C3</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. STUDENT DASHBOARD VIEW -->
+    <section id="view-student-dashboard" class="hidden space-y-6">
+      <!-- Student Banner -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full" id="stCardGrade">12 ශ්‍රේණිය</span>
+            <span class="bg-slate-100 text-slate-800 text-xs font-bold px-2.5 py-0.5 rounded-full" id="stCardClass">12-C1</span>
+          </div>
+          <h2 class="text-2xl font-black text-slate-800 mt-1" id="stCardName">සිසුවාගේ නම</h2>
+          <p class="text-xs text-slate-500">ලියාපදිංචි අංකය: <span class="font-bold text-slate-700" id="stCardReg">REG-000</span></p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button onclick="openPdfModal()" class="px-3.5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow transition flex items-center gap-1">
+            <i class="fa-solid fa-file-pdf"></i> PDF වාර්තා ලබාගැනීම
+          </button>
+          <button onclick="logoutStudent()" class="px-3.5 py-2 text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg transition flex items-center gap-1">
+            <i class="fa-solid fa-right-from-bracket"></i> ඉවත් වන්න
+          </button>
+        </div>
+      </div>
+
+      <!-- Subject Selection Filter Tabs -->
+      <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-1">තෝරාගත් විෂය:</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="stSubjectTabs">
+          <button onclick="selectStudentSubject('Account')" id="stSubBtn-Account" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ගිණුම්කරණය (Account)</span>
+            <i class="fa-solid fa-calculator"></i>
+          </button>
+          <button onclick="selectStudentSubject('BS')" id="stSubBtn-BS" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ව්‍යාපාර අධ්‍යයනය (BS)</span>
+            <i class="fa-solid fa-briefcase"></i>
+          </button>
+          <button onclick="selectStudentSubject('Econ')" id="stSubBtn-Econ" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ආර්ථික විද්‍යාව (Econ)</span>
+            <i class="fa-solid fa-chart-line"></i>
+          </button>
+          <button onclick="selectStudentSubject('IT')" id="stSubBtn-IT" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>තොරතුරු තාක්ෂණය (IT)</span>
+            <i class="fa-solid fa-laptop-code"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Subject Progress Line Chart -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-blue-600"></i>
+            <span id="stChartTitle">විෂයයන් හතරේ ප්‍රගති රේඛීය ප්‍රස්ථාරය</span>
+          </h3>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">විභාග අනුව ලකුණු</span>
+        </div>
+        <div class="h-64 w-full">
+          <canvas id="studentProgressChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Current Selected Subject Scores Card -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <span class="text-xs text-slate-500 font-bold block mb-1">බහුවරණ ලකුණු (MCQ)</span>
+          <div class="text-2xl font-black text-blue-600" id="stMcqScore">00</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <span class="text-xs text-slate-500 font-bold block mb-1">රචනා ලකුණු (Essay)</span>
+          <div class="text-2xl font-black text-indigo-600" id="stEssayScore">00</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <span class="text-xs text-slate-500 font-bold block mb-1">මුළු ලකුණු & ශ්‍රේණිය</span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-black text-slate-800" id="stTotalScore">00</span>
+            <span class="text-sm font-black px-2 py-0.5 rounded bg-amber-100 text-amber-800" id="stGradeBadge">W</span>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <span class="text-xs text-slate-500 font-bold block mb-1">පන්තියේ ස්ථානය</span>
+          <div class="text-2xl font-black text-emerald-600" id="stRank"># -</div>
+        </div>
+      </div>
+
+      <!-- Content Grid: Attendance, Zoom, Lessons, Polls, Announcements -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Attendance Record -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base border-b pb-2 flex items-center gap-2">
+            <i class="fa-solid fa-calendar-check text-emerald-600"></i> පැමිණීමේ වාර්තාව (Attendance)
+          </h3>
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="p-2 bg-emerald-50 rounded-lg">
+              <span class="text-xs text-emerald-700 block">පැමිණි දින</span>
+              <span class="text-lg font-bold text-emerald-800" id="stAttPresent">0</span>
+            </div>
+            <div class="p-2 bg-rose-50 rounded-lg">
+              <span class="text-xs text-rose-700 block">නොපැමිණි දින</span>
+              <span class="text-lg font-bold text-rose-800" id="stAttAbsent">0</span>
+            </div>
+            <div class="p-2 bg-blue-50 rounded-lg">
+              <span class="text-xs text-blue-700 block">ප්‍රතිශතය</span>
+              <span class="text-lg font-bold text-blue-800" id="stAttPercent">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zoom Meetings -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base border-b pb-2 flex items-center gap-2">
+            <i class="fa-solid fa-video text-blue-600"></i> Zoom Meetings
+          </h3>
+          <div id="stZoomList" class="space-y-2 max-h-40 overflow-y-auto">
+            <!-- Dynamic Zoom links -->
+          </div>
+        </div>
+
+        <!-- Lessons & Notes -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base border-b pb-2 flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-indigo-600"></i> පාඩම් සහ සටහන් (Lessons & Papers)
+          </h3>
+          <div id="stLessonsList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
+            <!-- Dynamic Lessons -->
+          </div>
+        </div>
+
+        <!-- Class Polls -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base border-b pb-2 flex items-center gap-2">
+            <i class="fa-solid fa-square-poll-vertical text-amber-600"></i> පන්ති Polls
+          </h3>
+          <div id="stPollsList" class="space-y-3 max-h-48 overflow-y-auto text-xs">
+            <!-- Dynamic Polls -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements Section -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+        <h3 class="font-bold text-slate-800 text-sm md:text-base border-b pb-2 flex items-center gap-2">
+          <i class="fa-solid fa-bullhorn text-rose-600"></i> පන්ති දැන්වීම් (Announcements)
+        </h3>
+        <div id="stAnnouncementsList" class="space-y-3 max-h-60 overflow-y-auto">
+          <!-- Dynamic Announcements -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TEACHER DASHBOARD VIEW -->
+    <section id="view-teacher-dashboard" class="hidden space-y-6">
+      <!-- Teacher Header -->
+      <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="bg-blue-500 text-white text-xs font-bold px-2.5 py-0.5 rounded-full" id="tchCurrentClassBadge">12-C1</span>
+          <h2 class="text-2xl font-black text-amber-400 mt-1">ගුරු පාලන පුවරුව (Teacher Portal)</h2>
+          <p class="text-xs text-slate-300">පන්තිය සහ විෂයන් අනුව දත්ත කළමනාකරණය කරන්න.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openChangePasswordModal('teacher')" class="px-3 py-1.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 rounded transition"><i class="fa-solid fa-key mr-1"></i> මුරපදය වෙනස් කිරීම</button>
+          <button onclick="confirmWipeAllData('teacher')" class="px-3 py-1.5 text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded transition"><i class="fa-solid fa-triangle-exclamation mr-1"></i> සියලුම දත්ත මකා දමන්න</button>
+          <button onclick="logoutTeacher()" class="px-3 py-1.5 text-xs font-bold bg-slate-700 hover:bg-slate-600 rounded transition"><i class="fa-solid fa-right-from-bracket mr-1"></i> ඉවත් වන්න</button>
+        </div>
+      </div>
+
+      <!-- Class Selection Selector -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <label class="block text-xs font-bold text-slate-600 mb-2">පාලනය කිරීමට පන්තිය තෝරන්න:</label>
+        <div class="grid grid-cols-3 md:grid-cols-6 gap-2" id="tchClassSelector">
+          <button onclick="switchTeacherClass('12-C1')" id="tchCls-12-C1" class="py-2 rounded font-bold text-xs border transition">12-C1</button>
+          <button onclick="switchTeacherClass('12-C2')" id="tchCls-12-C2" class="py-2 rounded font-bold text-xs border transition">12-C2</button>
+          <button onclick="switchTeacherClass('12-C3')" id="tchCls-12-C3" class="py-2 rounded font-bold text-xs border transition">12-C3</button>
+          <button onclick="switchTeacherClass('13-C1')" id="tchCls-13-C1" class="py-2 rounded font-bold text-xs border transition">13-C1</button>
+          <button onclick="switchTeacherClass('13-C2')" id="tchCls-13-C2" class="py-2 rounded font-bold text-xs border transition">13-C2</button>
+          <button onclick="switchTeacherClass('13-C3')" id="tchCls-13-C3" class="py-2 rounded font-bold text-xs border transition">13-C3</button>
+        </div>
+      </div>
+
+      <!-- Teacher Subject Selector Buttons -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <label class="block text-xs font-bold text-slate-600 mb-2">විෂය තෝරන්න:</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="tchSubjectTabs">
+          <button onclick="selectTeacherSubject('Account')" id="tchSubBtn-Account" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ගිණුම්කරණය (Account)</span>
+            <i class="fa-solid fa-calculator"></i>
+          </button>
+          <button onclick="selectTeacherSubject('BS')" id="tchSubBtn-BS" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ව්‍යාපාර අධ්‍යයනය (BS)</span>
+            <i class="fa-solid fa-briefcase"></i>
+          </button>
+          <button onclick="selectTeacherSubject('Econ')" id="tchSubBtn-Econ" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>ආර්ථික විද්‍යාව (Econ)</span>
+            <i class="fa-solid fa-chart-line"></i>
+          </button>
+          <button onclick="selectTeacherSubject('IT')" id="tchSubBtn-IT" class="py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border transition text-left flex justify-between items-center">
+            <span>තොරතුරු තාක්ෂණය (IT)</span>
+            <i class="fa-solid fa-laptop-code"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Teacher Management Tabs -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <!-- Sub-navigation -->
+        <div class="flex flex-wrap border-b border-slate-200 bg-slate-50 text-xs font-bold">
+          <button onclick="switchTeacherTab('students')" id="tchTabBtn-students" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-users"></i> සිසුන් කළමනාකරණය</button>
+          <button onclick="switchTeacherTab('scores')" id="tchTabBtn-scores" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-pen-to-square"></i> ලකුණු ඇතුළත් කිරීම</button>
+          <button onclick="switchTeacherTab('attendance')" id="tchTabBtn-attendance" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-clipboard-user"></i> පැමිණීම සලකුණු කිරීම</button>
+          <button onclick="switchTeacherTab('lessons')" id="tchTabBtn-lessons" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-file-arrow-up"></i> පාඩම් / ප්‍රශ්න පත්‍ර</button>
+          <button onclick="switchTeacherTab('polls')" id="tchTabBtn-polls" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-square-poll-vertical"></i> Polls නිර්මාණය</button>
+          <button onclick="switchTeacherTab('zoom')" id="tchTabBtn-zoom" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-video"></i> Zoom Meetings</button>
+          <button onclick="switchTeacherTab('announcements')" id="tchTabBtn-announcements" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-bullhorn"></i> දැන්වීම් පළකිරීම</button>
+          <button onclick="switchTeacherTab('grades')" id="tchTabBtn-grades" class="px-4 py-3 border-b-2 transition flex items-center gap-1.5"><i class="fa-solid fa-sliders"></i> ශ්‍රේණි සීමා (Cutoffs)</button>
+        </div>
+
+        <div class="p-6">
+          <!-- 1. Student Roster & Registration -->
+          <div id="tchTab-students" class="space-y-6">
+            <div class="flex justify-between items-center flex-wrap gap-3">
+              <h3 class="font-bold text-slate-800">ලියාපදිංචි සිසුන් ලැයිස්තුව</h3>
+              <button onclick="confirmWipeStudentsOnly()" class="px-3 py-1.5 text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white rounded transition">
+                <i class="fa-solid fa-user-slash mr-1"></i> සිසුන්ගේ නම් ලැයිස්තුව පමණක් මකා දමන්න
+              </button>
+            </div>
+
+            <!-- Add Student Form -->
+            <form onsubmit="handleRegisterStudent(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">සිසුවාගේ සම්පූර්ණ නම</label>
+                <input type="text" id="regStName" required class="w-full px-3 py-2 text-xs border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="උදා: කසුන් පෙරේරා">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">රෙජිස්ටර් අංකය</label>
+                <input type="text" id="regStRegNo" required class="w-full px-3 py-2 text-xs border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="උදා: REG-101">
+              </div>
+              <div class="flex items-end">
+                <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow transition">
+                  <i class="fa-solid fa-user-plus mr-1"></i> සිසුවා ලියාපදිංචි කරන්න
+                </button>
+              </div>
+            </form>
+
+            <!-- Table of Students -->
+            <div class="overflow-x-auto border rounded-xl">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 uppercase text-slate-600 border-b">
+                  <tr>
+                    <th class="p-3">රෙජිස්ටර් අංකය</th>
+                    <th class="p-3">නම</th>
+                    <th class="p-3">පන්තිය</th>
+                    <th class="p-3 text-right">ක්‍රියාකාරකම්</th>
+                  </tr>
+                </thead>
+                <tbody id="tchStudentsTableBody">
+                  <!-- Dynamic Roster -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Score Batch Entry Grid -->
+          <div id="tchTab-scores" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-800">සම්පූර්ණ පන්තියේ ලකුණු එකවර ඇතුළත් කිරීම</h3>
+                <p class="text-xs text-slate-500">තෝරාගත් විෂය: <span class="font-bold text-blue-600" id="tchScoreSubjectTitle">Account</span> | පන්තිය: <span class="font-bold text-blue-600" id="tchScoreClassTitle">12-C1</span></p>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto border rounded-xl">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-100 uppercase text-slate-600 border-b">
+                  <tr>
+                    <th class="p-3">රෙජිස්ටර් අංකය</th>
+                    <th class="p-3">සිසුවාගේ නම</th>
+                    <th class="p-3">බහුවරණ (MCQ)</th>
+                    <th class="p-3">රචනා (Essay)</th>
+                    <th class="p-3">මුළු ලකුණු</th>
+                    <th class="p-3">ශ්‍රේණිය (A,B,C,S,W)</th>
+                    <th class="p-3 text-right">මකන්න</th>
+                  </tr>
+                </thead>
+                <tbody id="tchScoresTableBody">
+                  <!-- Dynamic scores entry rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 3. Attendance Marker with Search Bar & 80% Filter (24-Month Scope) -->
+          <div id="tchTab-attendance" class="hidden space-y-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div>
+                <h3 class="font-bold text-slate-800 text-sm">දිනපතා පැමිණීම සලකුණු කිරීම & මාස 24 පැමිණීමේ වාර්තාව</h3>
+                <p class="text-xs text-slate-500">මාස 24 කාලසීමාව තුළ සිසුන්ගේ පැමිණීමේ ප්‍රතිශතය පරීක්ෂා කරන්න.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <!-- Search Bar -->
+                <div class="relative flex-1 md:w-64">
+                  <input type="text" id="tchAttSearchInput" oninput="renderTeacherAttendanceTable()" placeholder="නම හෝ REG අංකයෙන් සොයන්න..." class="w-full pl-8 pr-3 py-1.5 text-xs border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+                  <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                </div>
+                <!-- 80% Filter Dropdown -->
+                <select id="tchAttFilterSelect" onchange="renderTeacherAttendanceTable()" class="px-3 py-1.5 text-xs border rounded-lg outline-none bg-white font-bold text-slate-700">
+                  <option value="ALL">සියලුම සිසුන්</option>
+                  <option value="ABOVE_80">80% හෝ ඊට වැඩි පැමිණීම (≥ 80%)</option>
+                  <option value="BELOW_80">80% ට අඩු පැමිණීම (< 80%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto border rounded-xl">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-100 uppercase text-slate-600 border-b">
+                  <tr>
+                    <th class="p-3">රෙජිස්ටර් අංකය</th>
+                    <th class="p-3">නම</th>
+                    <th class="p-3">අද පැමිණීම සලකුණු කරන්න</th>
+                    <th class="p-3">මාස 24 සමස්ත ප්‍රතිශතය</th>
+                    <th class="p-3 text-right">80% තත්ත්වය</th>
+                  </tr>
+                </thead>
+                <tbody id="tchAttendanceTableBody">
+                  <!-- Dynamic attendance rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 4. Lessons & Notes Upload -->
+          <div id="tchTab-lessons" class="hidden space-y-6">
+            <h3 class="font-bold text-slate-800">නව පාඩම් / සටහන් / ප්‍රශ්න පත්‍ර එකතු කිරීම</h3>
+            <form onsubmit="handleUploadLesson(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">මාතෘකාව</label>
+                  <input type="text" id="lesTitle" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="උදා: 1 පාඩම - ගිණුම්කරණ සංකල්ප">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">වර්ගය</label>
+                  <select id="lesType" class="w-full px-3 py-2 text-xs border rounded-lg outline-none">
+                    <option value="PDF Document">PDF සටහන</option>
+                    <option value="Photo Paper">ප්‍රශ්න පත්‍ර පින්තූරය</option>
+                    <option value="Lesson Note">පාඩම් සටහන (Text)</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">විස්තරය / File Link / Text</label>
+                <textarea id="lesContent" required rows="2" class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="ලින්ක් එක හෝ පාඩම් විස්තරය ඇතුළත් කරන්න..."></textarea>
+              </div>
+              <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg shadow">
+                <i class="fa-solid fa-plus mr-1"></i> එකතු කරන්න
+              </button>
+            </form>
+
+            <div class="space-y-2" id="tchLessonsList">
+              <!-- Dynamic List -->
+            </div>
+          </div>
+
+          <!-- 5. Poll Builder (Supports up to 5 options) -->
+          <div id="tchTab-polls" class="hidden space-y-6">
+            <h3 class="font-bold text-slate-800">නව Poll එකක් නිර්මාණය කිරීම (විකල්ප 5ක් දක්වා)</h3>
+            <form onsubmit="handleCreatePoll(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">ප්‍රශ්නය</label>
+                <input type="text" id="pollQuestion" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="උදා: වත්කමක් වැඩිවීම හර වන්නේද?">
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <input type="text" id="pollOpt1" required class="px-3 py-2 text-xs border rounded-lg outline-none" placeholder="විකල්පය 1 (අනිවාර්යයි)">
+                <input type="text" id="pollOpt2" required class="px-3 py-2 text-xs border rounded-lg outline-none" placeholder="විකල්පය 2 (අනිවාර්යයි)">
+                <input type="text" id="pollOpt3" class="px-3 py-2 text-xs border rounded-lg outline-none" placeholder="විකල්පය 3 (අවශ්‍ය නම්)">
+                <input type="text" id="pollOpt4" class="px-3 py-2 text-xs border rounded-lg outline-none" placeholder="විකල්පය 4 (අවශ්‍ය නම්)">
+                <input type="text" id="pollOpt5" class="px-3 py-2 text-xs border rounded-lg outline-none md:col-span-2" placeholder="විකල්පය 5 (අවශ්‍ය නම්)">
+              </div>
+              <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-lg shadow">
+                <i class="fa-solid fa-bullseye mr-1"></i> Poll එක පළ කරන්න
+              </button>
+            </form>
+
+            <div class="space-y-3" id="tchPollsList">
+              <!-- Dynamic Poll List with results -->
+            </div>
+          </div>
+
+          <!-- 6. Zoom Scheduler -->
+          <div id="tchTab-zoom" class="hidden space-y-6">
+            <h3 class="font-bold text-slate-800">Zoom Meeting එකතු කිරීම</h3>
+            <form onsubmit="handleAddZoom(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">මාතෘකාව</label>
+                <input type="text" id="zoomTitle" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="උදා: පුනරීක්ෂණ පන්තිය">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">දිනය සහ වේලාව</label>
+                <input type="text" id="zoomTime" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="උදා: හෙට ප.ව. 7:00 ට">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Zoom Meeting Link</label>
+                <input type="url" id="zoomUrl" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="https://zoom.us/j/...">
+              </div>
+              <div class="md:col-span-3 flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow">
+                  <i class="fa-solid fa-video mr-1"></i> Meeting එකතු කරන්න
+                </button>
+              </div>
+            </form>
+
+            <div class="space-y-2" id="tchZoomList">
+              <!-- Dynamic Zoom list -->
+            </div>
+          </div>
+
+          <!-- 7. Announcements Builder -->
+          <div id="tchTab-announcements" class="hidden space-y-6">
+            <h3 class="font-bold text-slate-800">පන්ති දැන්වීම් පළකිරීම</h3>
+            <form onsubmit="handleCreateAnnouncement(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">දැන්වීම් මාතෘකාව</label>
+                  <input type="text" id="ancTitle" required class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="උදා: විශේෂ පන්ති නිවාඩු දැනුම්දීම">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">ලබන්නන් (Audience)</label>
+                  <select id="ancAudience" class="w-full px-3 py-2 text-xs border rounded-lg outline-none">
+                    <option value="CURRENT">තෝරාගත් පන්තියට පමණයි (<span id="ancCurrClsText">12-C1</span>)</option>
+                    <option value="ALL">සියලුම පන්ති සඳහාම (12 සහ 13)</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">දැන්වීමේ විස්තරය</label>
+                <textarea id="ancMessage" required rows="3" class="w-full px-3 py-2 text-xs border rounded-lg outline-none" placeholder="දැන්වීමේ විස්තරය මෙහි සටහන් කරන්න..."></textarea>
+              </div>
+              <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-lg shadow">
+                <i class="fa-solid fa-paper-plane mr-1"></i> දැන්වීම පළ කරන්න
+              </button>
+            </form>
+
+            <div class="space-y-3" id="tchAnnouncementsList">
+              <!-- Dynamic announcements -->
+            </div>
+          </div>
+
+          <!-- 8. Grade Cutoffs Configurator (A, B, C, S, W) -->
+          <div id="tchTab-grades" class="hidden space-y-6">
+            <h3 class="font-bold text-slate-800">ලකුණු අනුව ශ්‍රේණි (A, B, C, S, W) සීමා වෙනස් කිරීම</h3>
+            <form onsubmit="handleSaveGradeCutoffs(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 max-w-md">
+              <div class="flex items-center justify-between gap-4">
+                <label class="text-xs font-bold text-emerald-700">A ශ්‍රේණිය (අවම ලකුණ):</label>
+                <input type="number" id="cutoffA" min="0" max="100" class="w-24 px-3 py-1.5 text-xs border rounded-lg font-bold text-center">
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <label class="text-xs font-bold text-blue-700">B ශ්‍රේණිය (අවම ලකුණ):</label>
+                <input type="number" id="cutoffB" min="0" max="100" class="w-24 px-3 py-1.5 text-xs border rounded-lg font-bold text-center">
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <label class="text-xs font-bold text-amber-700">C ශ්‍රේණිය (අවම ලකුණ):</label>
+                <input type="number" id="cutoffC" min="0" max="100" class="w-24 px-3 py-1.5 text-xs border rounded-lg font-bold text-center">
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <label class="text-xs font-bold text-indigo-700">S ශ්‍රේණිය (අවම ලකුණ):</label>
+                <input type="number" id="cutoffS" min="0" max="100" class="w-24 px-3 py-1.5 text-xs border rounded-lg font-bold text-center">
+              </div>
+              <p class="text-xs text-slate-400 font-medium">* S සීමාවට අඩු ලකුණු සඳහා ස්වයංක්‍රීයව W ශ්‍රේණිය ලැබෙනු ඇත.</p>
+              <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow">
+                <i class="fa-solid fa-floppy-disk mr-1"></i> සීමාවන් සුරකින්න
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. HOD (HEAD OF DEPARTMENT) DASHBOARD VIEW -->
+    <section id="view-hod-dashboard" class="hidden space-y-6">
+      <!-- HOD Header -->
+      <div class="gradient-bg text-white p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="bg-amber-400 text-slate-900 text-xs font-black px-2.5 py-0.5 rounded-full uppercase">අංශ ප්‍රධාන පාලන පුවරුව</span>
+          <h2 class="text-2xl font-black text-amber-300 mt-1">Head of Department (HOD) Portal</h2>
+          <p class="text-xs text-slate-300">පන්ති හයම සහ සියලුම දත්ත කළමනාකරණය.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openChangePasswordModal('hod')" class="px-3 py-1.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 rounded transition"><i class="fa-solid fa-key mr-1"></i> මුරපදය වෙනස් කිරීම</button>
+          <button onclick="confirmWipeAllData('hod')" class="px-3 py-1.5 text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded transition"><i class="fa-solid fa-triangle-exclamation mr-1"></i> සියලුම දත්ත මකා දමන්න</button>
+          <button onclick="logoutHod()" class="px-3 py-1.5 text-xs font-bold bg-slate-700 hover:bg-slate-600 rounded transition"><i class="fa-solid fa-right-from-bracket mr-1"></i> ඉවත් වන්න</button>
+        </div>
+      </div>
+
+      <!-- 6 Classes Summary Cards Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="hodClassSummaryGrid">
+        <!-- Dynamic Summary Cards -->
+      </div>
+
+      <!-- HOD Global Actions Tabs -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+          <h3 class="font-bold text-slate-800 text-sm md:text-base"><i class="fa-solid fa-globe text-amber-500 mr-1.5"></i> සමස්ත පද්ධති පරිපාලනය</h3>
+        </div>
+        <div class="p-6 space-y-6">
+          
+          <!-- HOD Broadcast Announcement -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wider">සියලුම පන්ති සඳහා පොදු දැන්වීමක් නිකුත් කිරීම</h4>
+            <form onsubmit="handleHodGlobalAnnouncement(event)" class="space-y-3">
+              <input type="text" id="hodAncTitle" required class="w-full px-3 py-2 text-xs border rounded-lg" placeholder="දැන්වීම් මාතෘකාව">
+              <textarea id="hodAncMsg" required rows="2" class="w-full px-3 py-2 text-xs border rounded-lg" placeholder="විස්තරය..."></textarea>
+              <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-lg shadow">
+                <i class="fa-solid fa-paper-plane mr-1"></i> සියලුම පන්ති වෙත යවන්න
+              </button>
+            </form>
+          </div>
+
+          <!-- All Students Global Table -->
+          <div class="space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm">සියලුම පන්තිවල සමස්ත සිසුන් ලැයිස්තුව</h4>
+            <div class="overflow-x-auto border rounded-xl">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-100 uppercase text-slate-600 border-b">
+                  <tr>
+                    <th class="p-3">පන්තිය</th>
+                    <th class="p-3">රෙජිස්ටර් අංකය</th>
+                    <th class="p-3">නම</th>
+                    <th class="p-3 text-right">ක්‍රියාකාරකම්</th>
+                  </tr>
+                </thead>
+                <tbody id="hodAllStudentsTableBody">
+                  <!-- Dynamic Global Roster -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+      <div>
+        <span class="font-bold text-slate-200">කොමස් ගෲප් - Commerce Hub School Portal</span>
+        <p class="text-slate-500 mt-0.5">12 සහ 13 ශ්‍රේණි සඳහා වූ සම්පූර්ණ අධ්‍යාපනික කළමනාකරණ පද්ධතිය.</p>
+      </div>
+      <div class="text-slate-500">
+        &copy; <span id="footerYear"></span> Commerce Hub. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+
+  <!-- 1. Student Login Modal -->
+  <div id="modalStudentLogin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+          <i class="fa-solid fa-user-graduate text-blue-600"></i> සිසු පිවිසුම (<span id="modalClassTitle">12-C1</span>)
+        </h3>
+        <button onclick="closeModal('modalStudentLogin')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form onsubmit="handleStudentLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">රෙජිස්ටර් අංකය (Register Number)</label>
+          <input type="text" id="loginRegNo" required class="w-full px-3 py-2.5 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="උදා: REG-101">
+        </div>
+        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow transition">
+          පිවිසෙන්න <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Teacher Login Modal -->
+  <div id="modalTeacherLogin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+          <i class="fa-solid fa-chalkboard-user text-blue-600"></i> ගුරු පිවිසුම (Teacher Login)
+        </h3>
+        <button onclick="closeModal('modalTeacherLogin')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form onsubmit="handleTeacherLogin(event)" class="space-y-4">
+        <div id="tchPassSetupNotice" class="hidden p-2.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs">
+          <i class="fa-solid fa-info-circle mr-1"></i> පළමු පිවිසුම සඳහා ඔබට කැමති මුරපදයක් සකසන්න.
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">ගුරු මුරපදය</label>
+          <input type="password" id="loginTchPass" required class="w-full px-3 py-2.5 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+        </div>
+        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow transition">
+          පිවිසෙන්න <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. HOD Login Modal -->
+  <div id="modalHodLogin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+          <i class="fa-solid fa-user-shield text-amber-500"></i> අංශ ප්‍රධාන පිවිසුම (HOD)
+        </h3>
+        <button onclick="closeModal('modalHodLogin')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form onsubmit="handleHodLogin(event)" class="space-y-4">
+        <div id="hodPassSetupNotice" class="hidden p-2.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs">
+          <i class="fa-solid fa-info-circle mr-1"></i> පළමු පිවිසුම සඳහා ඔබට කැමති මුරපදයක් සකසන්න.
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">අංශ ප්‍රධාන මුරපදය</label>
+          <input type="password" id="loginHodPass" required class="w-full px-3 py-2.5 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="••••••••">
+        </div>
+        <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm rounded-xl shadow transition">
+          පිවිසෙන්න <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Change Password Modal -->
+  <div id="modalChangePassword" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 text-base">මුරපදය වෙනස් කිරීම</h3>
+        <button onclick="closeModal('modalChangePassword')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form onsubmit="handleChangePassword(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">නව මුරපදය</label>
+          <input type="password" id="newPasswordInput" required class="w-full px-3 py-2.5 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition">
+          සුරකින්න
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. PDF Download Modal -->
+  <div id="modalPdfReports" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+          <i class="fa-solid fa-file-pdf text-emerald-600"></i> PDF වාර්තා ලබාගැනීම
+        </h3>
+        <button onclick="closeModal('modalPdfReports')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="space-y-2">
+        <button onclick="generatePdf('progress')" class="w-full p-3 text-left border rounded-xl hover:bg-slate-50 flex items-center justify-between text-xs font-bold">
+          <span><i class="fa-solid fa-chart-line text-blue-600 mr-2"></i> ප්‍රගති වාර්තාව (Overall Progress Report)</span>
+          <i class="fa-solid fa-download text-slate-400"></i>
+        </button>
+        <button onclick="generatePdf('marks')" class="w-full p-3 text-left border rounded-xl hover:bg-slate-50 flex items-center justify-between text-xs font-bold">
+          <span><i class="fa-solid fa-list-check text-indigo-600 mr-2"></i> ලකුණු වාර්තාව (Marks Sheet)</span>
+          <i class="fa-solid fa-download text-slate-400"></i>
+        </button>
+        <button onclick="generatePdf('subject')" class="w-full p-3 text-left border rounded-xl hover:bg-slate-50 flex items-center justify-between text-xs font-bold">
+          <span><i class="fa-solid fa-book text-amber-600 mr-2"></i> විෂය අනුව ප්‍රගති වාර්තාව (Subject Performance)</span>
+          <i class="fa-solid fa-download text-slate-400"></i>
+        </button>
+        <button onclick="generatePdf('attendance')" class="w-full p-3 text-left border rounded-xl hover:bg-slate-50 flex items-center justify-between text-xs font-bold">
+          <span><i class="fa-solid fa-calendar-check text-emerald-600 mr-2"></i> පැමිණීමේ වාර්තාව (Attendance Log)</span>
+          <i class="fa-solid fa-download text-slate-400"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF Off-screen Container -->
+  <div id="pdfRenderTemplate" class="hidden p-8 bg-white font-sans text-slate-900"></div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- INITIAL DATA ARCHITECTURE & STORAGE FALLBACK ---
+    const DEFAULT_DATA = {
+      teachersPass: null,
+      hodPass: null,
+      cutoffs: { A: 75, B: 65, C: 50, S: 35 },
+      classes: {
+        '12-C1': createInitialClassData('12-C1'),
+        '12-C2': createInitialClassData('12-C2'),
+        '12-C3': createInitialClassData('12-C3'),
+        '13-C1': createInitialClassData('13-C1'),
+        '13-C2': createInitialClassData('13-C2'),
+        '13-C3': createInitialClassData('13-C3')
+      }
+    };
+
+    function createInitialClassData(clsName) {
+      return {
+        students: [
+          { regNo: 'REG-101', name: 'කසුන් පෙරේරා' },
+          { regNo: 'REG-102', name: 'නෙත්මි ධනංජනා' },
+          { regNo: 'REG-103', name: 'දිනුක මධුෂාන්' }
+        ],
+        scores: {
+          'REG-101': {
+            Account: { mcq: 45, essay: 42 },
+            BS: { mcq: 38, essay: 40 },
+            Econ: { mcq: 30, essay: 35 },
+            IT: { mcq: 48, essay: 46 }
+          },
+          'REG-102': {
+            Account: { mcq: 20, essay: 25 },
+            BS: { mcq: 30, essay: 32 },
+            Econ: { mcq: 40, essay: 38 },
+            IT: { mcq: 35, essay: 30 }
+          },
+          'REG-103': {
+            Account: { mcq: 40, essay: 38 },
+            BS: { mcq: 45, essay: 42 },
+            Econ: { mcq: 42, essay: 44 },
+            IT: { mcq: 40, essay: 40 }
+          }
+        },
+        attendance: {
+          'REG-101': { present: 18, absent: 2 },
+          'REG-102': { present: 15, absent: 5 },
+          'REG-103': { present: 20, absent: 0 }
+        },
+        lessons: [
+          { id: 1, subject: 'Account', title: '1 පාඩම - ගිණුම්කරණ පදනම', type: 'PDF Document', content: 'https://example.com/note1.pdf' },
+          { id: 2, subject: 'BS', title: 'ව්‍යාපාර පරිසරය සටහන්', type: 'Lesson Note', content: 'ව්‍යාපාර පරිසරයේ ප්‍රධාන කොටස් 2 කි.' }
+        ],
+        polls: [
+          { id: 1, subject: 'Account', question: 'වත්කම් වැඩිවීම හර වේද?', options: ['ඔව්', 'නැත', 'සමහර විට'], answers: { 'REG-101': 'ඔව්' } }
+        ],
+        zoom: [
+          { id: 1, title: 'විශේෂ පුනරීක්ෂණ පන්තිය', time: 'හෙට ප.ව. 7.00 ට', url: 'https://zoom.us' }
+        ],
+        announcements: [
+          { id: 1, title: 'පන්ති ආරම්භය', msg: 'ලබන සතියේ සිට නව කාලසටහන ක්‍රියාත්මක වේ.', date: '2026-03-30' }
+        ]
+      };
+    }
+
+    // STATE VARIABLES
+    let db = loadDatabase();
+    let currentStudent = null; // { regNo, name, cls }
+    let selectedStudentSubject = 'Account';
+    let currentTeacherClass = '12-C1';
+    let selectedTeacherSubject = 'Account';
+    let currentTeacherTab = 'students';
+    let activeRole = 'guest'; // 'guest', 'student', 'teacher', 'hod'
+    let studentChartInstance = null;
+    let pendingRoleForPassChange = '';
+
+    function loadDatabase() {
+      const stored = localStorage.getItem('commerce_hub_db');
+      if (stored) {
+        try { 
+          const parsed = JSON.parse(stored); 
+          if (!parsed.cutoffs.S) parsed.cutoffs.S = 35;
+          return parsed;
+        } catch (e) { console.error(e); }
+      }
+      return DEFAULT_DATA;
+    }
+
+    function saveDatabase() {
+      localStorage.setItem('commerce_hub_db', JSON.stringify(db));
+    }
+
+    // --- NAVIGATION CONTROLLER ---
+    function switchView(viewName) {
+      document.getElementById('view-landing').classList.add('hidden');
+      document.getElementById('view-student-dashboard').classList.add('hidden');
+      document.getElementById('view-teacher-dashboard').classList.add('hidden');
+      document.getElementById('view-hod-dashboard').classList.add('hidden');
+
+      document.getElementById(`view-${viewName}`).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // --- 1. STUDENT FLOWS ---
+    let targetClassForStudentLogin = '';
+    function handleClassSelect(cls) {
+      targetClassForStudentLogin = cls;
+      document.getElementById('modalClassTitle').innerText = cls;
+      document.getElementById('loginRegNo').value = '';
+      document.getElementById('modalStudentLogin').classList.remove('hidden');
+    }
+
+    function handleStudentLogin(e) {
+      e.preventDefault();
+      const reg = document.getElementById('loginRegNo').value.trim();
+      const clsData = db.classes[targetClassForStudentLogin];
+
+      if (!clsData) return;
+
+      const st = clsData.students.find(s => s.regNo.toUpperCase() === reg.toUpperCase());
+      if (!st) {
+        alert('ඇතුළත් කළ රෙජිස්ටර් අංකය මෙම පන්තියේ නොමැත! කරුණාකර නැවත පරීක්ෂා කරන්න.');
+        return;
+      }
+
+      currentStudent = { regNo: st.regNo, name: st.name, cls: targetClassForStudentLogin };
+      activeRole = 'student';
+      closeModal('modalStudentLogin');
+      renderStudentDashboard();
+      switchView('student-dashboard');
+    }
+
+    function selectStudentSubject(subKey) {
+      selectedStudentSubject = subKey;
+      renderStudentSubjectData();
+    }
+
+    function renderStudentDashboard() {
+      if (!currentStudent) return;
+      const grade = currentStudent.cls.startsWith('12') ? '12 ශ්‍රේණිය' : '13 ශ්‍රේණිය';
+
+      document.getElementById('stCardName').innerText = currentStudent.name;
+      document.getElementById('stCardReg').innerText = currentStudent.regNo;
+      document.getElementById('stCardClass').innerText = currentStudent.cls;
+      document.getElementById('stCardGrade').innerText = grade;
+
+      renderStudentSubjectData();
+      renderStudentProgressChart();
+      renderStudentAttendance();
+      renderStudentZoom();
+      renderStudentLessons();
+      renderStudentPolls();
+      renderStudentAnnouncements();
+    }
+
+    function renderStudentSubjectData() {
+      const subjects = ['Account', 'BS', 'Econ', 'IT'];
+      subjects.forEach(sub => {
+        const btn = document.getElementById(`stSubBtn-${sub}`);
+        if (sub === selectedStudentSubject) {
+          btn.className = "py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border border-blue-600 bg-blue-50 text-blue-800 shadow-sm flex justify-between items-center";
+        } else {
+          btn.className = "py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border border-slate-200 hover:bg-slate-50 text-slate-700 flex justify-between items-center";
+        }
+      });
+
+      const clsData = db.classes[currentStudent.cls];
+      const stScores = (clsData.scores[currentStudent.regNo] && clsData.scores[currentStudent.regNo][selectedStudentSubject]) || { mcq: 0, essay: 0 };
+      
+      const mcq = stScores.mcq || 0;
+      const essay = stScores.essay || 0;
+      const total = mcq + essay;
+
+      document.getElementById('stMcqScore').innerText = mcq;
+      document.getElementById('stEssayScore').innerText = essay;
+      document.getElementById('stTotalScore').innerText = total;
+
+      // Grade computation (A, B, C, S, W)
+      const grade = calculateGrade(total);
+      document.getElementById('stGradeBadge').innerText = grade;
+
+      // Rank computation
+      const rank = calculateRank(currentStudent.cls, selectedStudentSubject, currentStudent.regNo);
+      document.getElementById('stRank').innerText = `# ${rank}`;
+    }
+
+    function calculateGrade(total) {
+      if (total >= db.cutoffs.A) return 'A';
+      if (total >= db.cutoffs.B) return 'B';
+      if (total >= db.cutoffs.C) return 'C';
+      if (total >= (db.cutoffs.S || 35)) return 'S';
+      return 'W';
+    }
+
+    function calculateRank(cls, subject, regNo) {
+      const clsData = db.classes[cls];
+      const list = clsData.students.map(s => {
+        const sc = (clsData.scores[s.regNo] && clsData.scores[s.regNo][subject]) || { mcq: 0, essay: 0 };
+        return { regNo: s.regNo, total: (sc.mcq || 0) + (sc.essay || 0) };
+      });
+      list.sort((a, b) => b.total - a.total);
+      const idx = list.findIndex(item => item.regNo === regNo);
+      return idx >= 0 ? idx + 1 : '-';
+    }
+
+    function renderStudentProgressChart() {
+      const ctx = document.getElementById('studentProgressChart').getContext('2d');
+      const clsData = db.classes[currentStudent.cls];
+      const stScores = clsData.scores[currentStudent.regNo] || {};
+
+      const subjects = ['Account', 'BS', 'Econ', 'IT'];
+      const mcqData = subjects.map(s => (stScores[s] && stScores[s].mcq) || 0);
+      const essayData = subjects.map(s => (stScores[s] && stScores[s].essay) || 0);
+
+      if (studentChartInstance) studentChartInstance.destroy();
+
+      studentChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['ගිණුම්කරණය (Account)', 'ව්‍යාපාර (BS)', 'ආර්ථික (Econ)', 'තොරතුරු තාක්ෂණය (IT)'],
+          datasets: [
+            {
+              label: 'බහුවරණ (MCQ)',
+              data: mcqData,
+              borderColor: '#2563eb',
+              backgroundColor: 'rgba(37, 99, 235, 0.1)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'රචනා (Essay)',
+              data: essayData,
+              borderColor: '#4f46e5',
+              backgroundColor: 'rgba(79, 70, 229, 0.1)',
+              tension: 0.3,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, max: 50 }
+          }
+        }
+      });
+    }
+
+    function renderStudentAttendance() {
+      const clsData = db.classes[currentStudent.cls];
+      const att = (clsData.attendance && clsData.attendance[currentStudent.regNo]) || { present: 0, absent: 0 };
+      const total = att.present + att.absent;
+      const pct = total > 0 ? Math.round((att.present / total) * 100) : 0;
+
+      document.getElementById('stAttPresent').innerText = att.present;
+      document.getElementById('stAttAbsent').innerText = att.absent;
+      document.getElementById('stAttPercent').innerText = `${pct}%`;
+    }
+
+    function renderStudentZoom() {
+      const clsData = db.classes[currentStudent.cls];
+      const container = document.getElementById('stZoomList');
+      if (!clsData.zoom || clsData.zoom.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">Zoom Meetings නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = clsData.zoom.map(z => `
+        <div class="p-2.5 bg-blue-50/50 rounded-lg border border-blue-100 flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-slate-800 block">${z.title}</span>
+            <span class="text-slate-500">${z.time}</span>
+          </div>
+          <a href="${z.url}" target="_blank" class="px-3 py-1 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 transition">සම්බන්ධ වන්න</a>
+        </div>
+      `).join('');
+    }
+
+    function renderStudentLessons() {
+      const clsData = db.classes[currentStudent.cls];
+      const container = document.getElementById('stLessonsList');
+      const filtered = (clsData.lessons || []).filter(l => l.subject === selectedStudentSubject);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">මෙම විෂය සඳහා පාඩම් එකතු කර නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(l => `
+        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-bold text-slate-800">${l.title}</span>
+            <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded">${l.type}</span>
+          </div>
+          <p class="text-slate-600 mb-2">${l.content}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderStudentPolls() {
+      const clsData = db.classes[currentStudent.cls];
+      const container = document.getElementById('stPollsList');
+      const filtered = (clsData.polls || []).filter(p => p.subject === selectedStudentSubject);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">ක්‍රියාකාරී Polls නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => {
+        const myAns = p.answers && p.answers[currentStudent.regNo];
+        return `
+          <div class="p-3 bg-amber-50/40 rounded-xl border border-amber-200 space-y-2">
+            <p class="font-bold text-slate-800">${p.question}</p>
+            <div class="flex flex-wrap gap-2">
+              ${p.options.map(opt => `
+                <button onclick="submitPollAnswer(${p.id}, '${opt}')" ${myAns ? 'disabled' : ''} class="px-3 py-1.5 text-xs font-bold rounded-lg border ${myAns === opt ? 'bg-amber-500 text-slate-950 border-amber-500' : 'bg-white text-slate-700 hover:bg-amber-100'} shadow-sm transition">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+            ${myAns ? `<span class="text-[10px] text-emerald-600 font-bold block"><i class="fa-solid fa-circle-check"></i> ඔබ පිළිතුරු ලබාදී ඇත.</span>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function submitPollAnswer(pollId, answer) {
+      const clsData = db.classes[currentStudent.cls];
+      const poll = clsData.polls.find(p => p.id === pollId);
+      if (poll) {
+        if (!poll.answers) poll.answers = {};
+        poll.answers[currentStudent.regNo] = answer;
+        saveDatabase();
+        renderStudentPolls();
+      }
+    }
+
+    function renderStudentAnnouncements() {
+      const clsData = db.classes[currentStudent.cls];
+      const container = document.getElementById('stAnnouncementsList');
+      const list = clsData.announcements || [];
+
+      if (list.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">දැන්වීම් නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = list.map(a => `
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-bold text-rose-700 text-xs">${a.title}</span>
+            <span class="text-[10px] text-slate-400">${a.date || ''}</span>
+          </div>
+          <p class="text-xs text-slate-700">${a.msg}</p>
+        </div>
+      `).join('');
+    }
+
+    function logoutStudent() {
+      currentStudent = null;
+      activeRole = 'guest';
+      switchView('landing');
+    }
+
+    // --- 2. TEACHER FLOWS ---
+    function openTeacherLoginModal() {
+      document.getElementById('loginTchPass').value = '';
+      if (!db.teachersPass) {
+        document.getElementById('tchPassSetupNotice').classList.remove('hidden');
+      } else {
+        document.getElementById('tchPassSetupNotice').classList.add('hidden');
+      }
+      document.getElementById('modalTeacherLogin').classList.remove('hidden');
+    }
+
+    function handleTeacherLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('loginTchPass').value.trim();
+
+      if (!db.teachersPass) {
+        db.teachersPass = pass;
+        saveDatabase();
+      } else if (db.teachersPass !== pass) {
+        alert('ගුරු මුරපදය වැරදිය!');
+        return;
+      }
+
+      closeModal('modalTeacherLogin');
+      activeRole = 'teacher';
+      renderTeacherDashboard();
+      switchView('teacher-dashboard');
+    }
+
+    function switchTeacherClass(cls) {
+      currentTeacherClass = cls;
+      renderTeacherDashboard();
+    }
+
+    function selectTeacherSubject(subKey) {
+      selectedTeacherSubject = subKey;
+      renderTeacherSubjectTabs();
+      renderTeacherScoresTable();
+      renderTeacherLessons();
+      renderTeacherPolls();
+    }
+
+    function switchTeacherTab(tabName) {
+      currentTeacherTab = tabName;
+      const tabs = ['students', 'scores', 'attendance', 'lessons', 'polls', 'zoom', 'announcements', 'grades'];
+      tabs.forEach(t => {
+        document.getElementById(`tchTab-${t}`).classList.add('hidden');
+        document.getElementById(`tchTabBtn-${t}`).className = "px-4 py-3 border-b-2 transition flex items-center gap-1.5 border-transparent text-slate-600 hover:text-slate-900";
+      });
+
+      document.getElementById(`tchTab-${tabName}`).classList.remove('hidden');
+      document.getElementById(`tchTabBtn-${tabName}`).className = "px-4 py-3 border-b-2 transition flex items-center gap-1.5 border-blue-600 text-blue-600 font-bold bg-white";
+    }
+
+    function renderTeacherDashboard() {
+      document.getElementById('tchCurrentClassBadge').innerText = currentTeacherClass;
+      document.getElementById('ancCurrClsText').innerText = currentTeacherClass;
+
+      // Class buttons highlight
+      ['12-C1','12-C2','12-C3','13-C1','13-C2','13-C3'].forEach(c => {
+        const btn = document.getElementById(`tchCls-${c}`);
+        if (c === currentTeacherClass) {
+          btn.className = "py-2 rounded font-bold text-xs bg-blue-600 text-white border-blue-600 shadow-sm";
+        } else {
+          btn.className = "py-2 rounded font-bold text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200";
+        }
+      });
+
+      renderTeacherSubjectTabs();
+      renderTeacherStudentsTable();
+      renderTeacherScoresTable();
+      renderTeacherAttendanceTable();
+      renderTeacherLessons();
+      renderTeacherPolls();
+      renderTeacherZoom();
+      renderTeacherAnnouncements();
+
+      // Cutoffs values
+      document.getElementById('cutoffA').value = db.cutoffs.A;
+      document.getElementById('cutoffB').value = db.cutoffs.B;
+      document.getElementById('cutoffC').value = db.cutoffs.C;
+      document.getElementById('cutoffS').value = db.cutoffs.S || 35;
+    }
+
+    function renderTeacherSubjectTabs() {
+      ['Account', 'BS', 'Econ', 'IT'].forEach(sub => {
+        const btn = document.getElementById(`tchSubBtn-${sub}`);
+        if (sub === selectedTeacherSubject) {
+          btn.className = "py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border border-blue-600 bg-blue-50 text-blue-800 shadow-sm flex justify-between items-center";
+        } else {
+          btn.className = "py-2.5 px-3 rounded-lg text-xs md:text-sm font-bold border border-slate-200 hover:bg-slate-50 text-slate-700 flex justify-between items-center";
+        }
+      });
+      document.getElementById('tchScoreSubjectTitle').innerText = selectedTeacherSubject;
+      document.getElementById('tchScoreClassTitle').innerText = currentTeacherClass;
+    }
+
+    function renderTeacherStudentsTable() {
+      const clsData = db.classes[currentTeacherClass];
+      const tbody = document.getElementById('tchStudentsTableBody');
+
+      if (!clsData.students || clsData.students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">සිසුන් ලියාපදිංචි කර නොමැත.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = clsData.students.map(s => `
+        <tr class="border-b hover:bg-slate-50">
+          <td class="p-3 font-bold text-blue-700">${s.regNo}</td>
+          <td class="p-3">${s.name}</td>
+          <td class="p-3">${currentTeacherClass}</td>
+          <td class="p-3 text-right">
+            <button onclick="confirmDeleteStudent('${currentTeacherClass}', '${s.regNo}')" class="px-2.5 py-1 text-[11px] bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded transition">
+              <i class="fa-solid fa-trash-can"></i> ඉවත් කරන්න
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function handleRegisterStudent(e) {
+      e.preventDefault();
+      const name = document.getElementById('regStName').value.trim();
+      const regNo = document.getElementById('regStRegNo').value.trim().toUpperCase();
+
+      const clsData = db.classes[currentTeacherClass];
+      if (clsData.students.some(s => s.regNo === regNo)) {
+        alert('මෙම රෙජිස්ටර් අංකය දැනටමත් පවතී!');
+        return;
+      }
+
+      clsData.students.push({ regNo, name });
+      saveDatabase();
+      document.getElementById('regStName').value = '';
+      document.getElementById('regStRegNo').value = '';
+      renderTeacherStudentsTable();
+      renderTeacherScoresTable();
+      renderTeacherAttendanceTable();
+    }
+
+    function confirmDeleteStudent(cls, regNo) {
+      if (confirm(`ඔබට ${regNo} සිසුවා සම්පූර්ණයෙන්ම ඉවත් කිරීමට අවශ්‍යද?`)) {
+        const clsData = db.classes[cls];
+        clsData.students = clsData.students.filter(s => s.regNo !== regNo);
+        delete clsData.scores[regNo];
+        delete clsData.attendance[regNo];
+        saveDatabase();
+        renderTeacherStudentsTable();
+        renderTeacherScoresTable();
+        renderTeacherAttendanceTable();
+      }
+    }
+
+    function renderTeacherScoresTable() {
+      const clsData = db.classes[currentTeacherClass];
+      const tbody = document.getElementById('tchScoresTableBody');
+
+      if (!clsData.students || clsData.students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">ලකුණු ඇතුළත් කිරීමට සිසුන් නොමැත.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = clsData.students.map(s => {
+        const sc = (clsData.scores[s.regNo] && clsData.scores[s.regNo][selectedTeacherSubject]) || { mcq: 0, essay: 0 };
+        const total = (sc.mcq || 0) + (sc.essay || 0);
+        const grade = calculateGrade(total);
+
+        return `
+          <tr class="border-b hover:bg-slate-50">
+            <td class="p-3 font-bold">${s.regNo}</td>
+            <td class="p-3">${s.name}</td>
+            <td class="p-3">
+              <input type="number" min="0" max="50" value="${sc.mcq || 0}" onchange="updateScore('${s.regNo}', 'mcq', this.value)" class="w-16 px-2 py-1 text-xs border rounded font-bold">
+            </td>
+            <td class="p-3">
+              <input type="number" min="0" max="50" value="${sc.essay || 0}" onchange="updateScore('${s.regNo}', 'essay', this.value)" class="w-16 px-2 py-1 text-xs border rounded font-bold">
+            </td>
+            <td class="p-3 font-black text-blue-700">${total}</td>
+            <td class="p-3 font-black text-amber-800">${grade}</td>
+            <td class="p-3 text-right">
+              <button onclick="confirmDeleteScore('${s.regNo}')" class="px-2 py-1 text-xs text-rose-600 hover:bg-rose-50 rounded"><i class="fa-solid fa-eraser"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateScore(regNo, type, val) {
+      const clsData = db.classes[currentTeacherClass];
+      if (!clsData.scores[regNo]) clsData.scores[regNo] = {};
+      if (!clsData.scores[regNo][selectedTeacherSubject]) clsData.scores[regNo][selectedTeacherSubject] = { mcq: 0, essay: 0 };
+
+      clsData.scores[regNo][selectedTeacherSubject][type] = parseInt(val) || 0;
+      saveDatabase();
+      renderTeacherScoresTable();
+    }
+
+    function confirmDeleteScore(regNo) {
+      if (confirm('මෙම සිසුවාගේ අදාළ ලකුණ මකා දැමීමට අවශ්‍යද?')) {
+        const clsData = db.classes[currentTeacherClass];
+        if (clsData.scores[regNo] && clsData.scores[regNo][selectedTeacherSubject]) {
+          delete clsData.scores[regNo][selectedTeacherSubject];
+          saveDatabase();
+          renderTeacherScoresTable();
+        }
+      }
+    }
+
+    // Render Teacher Attendance Table with Search and 80% Filter (24-Month Scope)
+    function renderTeacherAttendanceTable() {
+      const clsData = db.classes[currentTeacherClass];
+      const tbody = document.getElementById('tchAttendanceTableBody');
+      const searchVal = (document.getElementById('tchAttSearchInput')?.value || '').trim().toLowerCase();
+      const filterVal = document.getElementById('tchAttFilterSelect')?.value || 'ALL';
+
+      if (!clsData.students || clsData.students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">සිසුන් නොමැත.</td></tr>`;
+        return;
+      }
+
+      let filteredStudents = clsData.students.filter(s => {
+        const matchesSearch = s.name.toLowerCase().includes(searchVal) || s.regNo.toLowerCase().includes(searchVal);
+        const att = (clsData.attendance && clsData.attendance[s.regNo]) || { present: 0, absent: 0 };
+        const total = att.present + att.absent;
+        const pct = total > 0 ? Math.round((att.present / total) * 100) : 0;
+
+        let matchesFilter = true;
+        if (filterVal === 'ABOVE_80') matchesFilter = pct >= 80;
+        else if (filterVal === 'BELOW_80') matchesFilter = pct < 80;
+
+        return matchesSearch && matchesFilter;
+      });
+
+      if (filteredStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">සෙවීමට අදාළ සිසුන් හමු නොවුණි.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filteredStudents.map(s => {
+        const att = (clsData.attendance && clsData.attendance[s.regNo]) || { present: 0, absent: 0 };
+        const total = att.present + att.absent;
+        const pct = total > 0 ? Math.round((att.present / total) * 100) : 0;
+        const is80Plus = pct >= 80;
+
+        return `
+          <tr class="border-b hover:bg-slate-50">
+            <td class="p-3 font-bold">${s.regNo}</td>
+            <td class="p-3">${s.name}</td>
+            <td class="p-3 flex gap-2">
+              <button onclick="markAttendance('${s.regNo}', 'present')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded text-xs"><i class="fa-solid fa-check"></i> පැමිණියා</button>
+              <button onclick="markAttendance('${s.regNo}', 'absent')" class="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded text-xs"><i class="fa-solid fa-xmark"></i> නොපැමිණියා</button>
+            </td>
+            <td class="p-3 font-bold text-slate-700">${pct}% (${att.present}/${total})</td>
+            <td class="p-3 text-right">
+              ${is80Plus 
+                ? `<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full text-[11px]"><i class="fa-solid fa-circle-check"></i> 80% සම්පූර්ණයි</span>` 
+                : `<span class="px-2.5 py-1 bg-rose-100 text-rose-800 font-bold rounded-full text-[11px]"><i class="fa-solid fa-circle-xmark"></i> 80% ට අඩුයි</span>`
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function markAttendance(regNo, status) {
+      const clsData = db.classes[currentTeacherClass];
+      if (!clsData.attendance[regNo]) clsData.attendance[regNo] = { present: 0, absent: 0 };
+
+      if (status === 'present') clsData.attendance[regNo].present += 1;
+      else clsData.attendance[regNo].absent += 1;
+
+      saveDatabase();
+      renderTeacherAttendanceTable();
+    }
+
+    function handleUploadLesson(e) {
+      e.preventDefault();
+      const title = document.getElementById('lesTitle').value.trim();
+      const type = document.getElementById('lesType').value;
+      const content = document.getElementById('lesContent').value.trim();
+
+      const clsData = db.classes[currentTeacherClass];
+      if (!clsData.lessons) clsData.lessons = [];
+
+      clsData.lessons.push({
+        id: Date.now(),
+        subject: selectedTeacherSubject,
+        title,
+        type,
+        content
+      });
+
+      saveDatabase();
+      document.getElementById('lesTitle').value = '';
+      document.getElementById('lesContent').value = '';
+      renderTeacherLessons();
+    }
+
+    function renderTeacherLessons() {
+      const clsData = db.classes[currentTeacherClass];
+      const container = document.getElementById('tchLessonsList');
+      const filtered = (clsData.lessons || []).filter(l => l.subject === selectedTeacherSubject);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">මෙම විෂය සඳහා එක් කළ පාඩම් නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(l => `
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-slate-800">${l.title} (${l.type})</span>
+            <p class="text-slate-500">${l.content}</p>
+          </div>
+          <button onclick="confirmDeleteLesson(${l.id})" class="px-2.5 py-1 bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold rounded transition"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function confirmDeleteLesson(id) {
+      if (confirm('මෙම පාඩම මකා දැමීමට ඔබට විශ්වාසද?')) {
+        const clsData = db.classes[currentTeacherClass];
+        clsData.lessons = clsData.lessons.filter(l => l.id !== id);
+        saveDatabase();
+        renderTeacherLessons();
+      }
+    }
+
+    // Handle Poll with up to 5 options
+    function handleCreatePoll(e) {
+      e.preventDefault();
+      const q = document.getElementById('pollQuestion').value.trim();
+      const opt1 = document.getElementById('pollOpt1').value.trim();
+      const opt2 = document.getElementById('pollOpt2').value.trim();
+      const opt3 = document.getElementById('pollOpt3').value.trim();
+      const opt4 = document.getElementById('pollOpt4').value.trim();
+      const opt5 = document.getElementById('pollOpt5').value.trim();
+
+      const options = [opt1, opt2, opt3, opt4, opt5].filter(o => o !== '');
+
+      const clsData = db.classes[currentTeacherClass];
+      if (!clsData.polls) clsData.polls = [];
+
+      clsData.polls.push({
+        id: Date.now(),
+        subject: selectedTeacherSubject,
+        question: q,
+        options: options,
+        answers: {}
+      });
+
+      saveDatabase();
+      document.getElementById('pollQuestion').value = '';
+      document.getElementById('pollOpt1').value = '';
+      document.getElementById('pollOpt2').value = '';
+      document.getElementById('pollOpt3').value = '';
+      document.getElementById('pollOpt4').value = '';
+      document.getElementById('pollOpt5').value = '';
+      renderTeacherPolls();
+    }
+
+    function renderTeacherPolls() {
+      const clsData = db.classes[currentTeacherClass];
+      const container = document.getElementById('tchPollsList');
+      const filtered = (clsData.polls || []).filter(p => p.subject === selectedTeacherSubject);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">Polls නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => `
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-slate-800">${p.question}</span>
+            <button onclick="confirmDeletePoll(${p.id})" class="px-2 py-1 text-rose-600 hover:bg-rose-50 rounded font-bold"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+          <div class="bg-white p-2 rounded border">
+            <span class="font-bold block mb-1 text-[11px] text-slate-600">විකල්ප: ${p.options.join(', ')}</span>
+            <span class="font-bold block mb-1 text-[11px] text-slate-600 border-t pt-1">සිසුන්ගේ පිළිතුරු:</span>
+            ${Object.keys(p.answers || {}).length === 0 ? '<span class="text-slate-400">තවම පිළිතුරු ලබාදී නැත.</span>' : ''}
+            ${Object.entries(p.answers || {}).map(([reg, ans]) => `<div class="text-[11px]"><span class="font-bold">${reg}:</span> ${ans}</div>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function confirmDeletePoll(id) {
+      if (confirm('මෙම Poll එක මකා දැමීමට ඔබට විශ්වාසද?')) {
+        const clsData = db.classes[currentTeacherClass];
+        clsData.polls = clsData.polls.filter(p => p.id !== id);
+        saveDatabase();
+        renderTeacherPolls();
+      }
+    }
+
+    function handleAddZoom(e) {
+      e.preventDefault();
+      const title = document.getElementById('zoomTitle').value.trim();
+      const time = document.getElementById('zoomTime').value.trim();
+      const url = document.getElementById('zoomUrl').value.trim();
+
+      const clsData = db.classes[currentTeacherClass];
+      if (!clsData.zoom) clsData.zoom = [];
+
+      clsData.zoom.push({ id: Date.now(), title, time, url });
+      saveDatabase();
+
+      document.getElementById('zoomTitle').value = '';
+      document.getElementById('zoomTime').value = '';
+      document.getElementById('zoomUrl').value = '';
+      renderTeacherZoom();
+    }
+
+    function renderTeacherZoom() {
+      const clsData = db.classes[currentTeacherClass];
+      const container = document.getElementById('tchZoomList');
+
+      if (!clsData.zoom || clsData.zoom.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">Zoom Meetings නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = clsData.zoom.map(z => `
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-slate-800 block">${z.title} (${z.time})</span>
+            <a href="${z.url}" target="_blank" class="text-blue-600 underline">${z.url}</a>
+          </div>
+          <button onclick="confirmDeleteZoom(${z.id})" class="px-2.5 py-1 bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold rounded transition"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function confirmDeleteZoom(id) {
+      if (confirm('මෙම Zoom link එක මකා දැමීමට ඔබට විශ්වාසද?')) {
+        const clsData = db.classes[currentTeacherClass];
+        clsData.zoom = clsData.zoom.filter(z => z.id !== id);
+        saveDatabase();
+        renderTeacherZoom();
+      }
+    }
+
+    function handleCreateAnnouncement(e) {
+      e.preventDefault();
+      const title = document.getElementById('ancTitle').value.trim();
+      const audience = document.getElementById('ancAudience').value;
+      const msg = document.getElementById('ancMessage').value.trim();
+
+      const ancObj = { id: Date.now(), title, msg, date: new Date().toISOString().split('T')[0] };
+
+      if (audience === 'ALL') {
+        Object.keys(db.classes).forEach(c => {
+          if (!db.classes[c].announcements) db.classes[c].announcements = [];
+          db.classes[c].announcements.push(ancObj);
+        });
+      } else {
+        const clsData = db.classes[currentTeacherClass];
+        if (!clsData.announcements) clsData.announcements = [];
+        clsData.announcements.push(ancObj);
+      }
+
+      saveDatabase();
+      document.getElementById('ancTitle').value = '';
+      document.getElementById('ancMessage').value = '';
+      renderTeacherAnnouncements();
+    }
+
+    function renderTeacherAnnouncements() {
+      const clsData = db.classes[currentTeacherClass];
+      const container = document.getElementById('tchAnnouncementsList');
+
+      if (!clsData.announcements || clsData.announcements.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400">දැන්වීම් නොමැත.</p>`;
+        return;
+      }
+
+      container.innerHTML = clsData.announcements.map(a => `
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-rose-700 block">${a.title}</span>
+            <p class="text-slate-600">${a.msg}</p>
+          </div>
+          <button onclick="confirmDeleteAnnouncement(${a.id})" class="px-2.5 py-1 bg-rose-100 text-rose-700 hover:bg-rose-200 font-bold rounded transition"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function confirmDeleteAnnouncement(id) {
+      if (confirm('මෙම දැන්වීම මකා දැමීමට ඔබට විශ්වාසද?')) {
+        const clsData = db.classes[currentTeacherClass];
+        clsData.announcements = clsData.announcements.filter(a => a.id !== id);
+        saveDatabase();
+        renderTeacherAnnouncements();
+      }
+    }
+
+    function handleSaveGradeCutoffs(e) {
+      e.preventDefault();
+      db.cutoffs.A = parseInt(document.getElementById('cutoffA').value) || 75;
+      db.cutoffs.B = parseInt(document.getElementById('cutoffB').value) || 65;
+      db.cutoffs.C = parseInt(document.getElementById('cutoffC').value) || 50;
+      db.cutoffs.S = parseInt(document.getElementById('cutoffS').value) || 35;
+      saveDatabase();
+      alert('ශ්‍රේණි සීමාවන් (A, B, C, S, W) සාර්ථකව යාවත්කාලීන විය!');
+    }
+
+    function logoutTeacher() {
+      activeRole = 'guest';
+      switchView('landing');
+    }
+
+    // --- 3. HOD FLOWS ---
+    function openHodLoginModal() {
+      document.getElementById('loginHodPass').value = '';
+      if (!db.hodPass) {
+        document.getElementById('hodPassSetupNotice').classList.remove('hidden');
+      } else {
+        document.getElementById('hodPassSetupNotice').classList.add('hidden');
+      }
+      document.getElementById('modalHodLogin').classList.remove('hidden');
+    }
+
+    function handleHodLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('loginHodPass').value.trim();
+
+      if (!db.hodPass) {
+        db.hodPass = pass;
+        saveDatabase();
+      } else if (db.hodPass !== pass) {
+        alert('අංශ ප්‍රධාන මුරපදය වැරදිය!');
+        return;
+      }
+
+      closeModal('modalHodLogin');
+      activeRole = 'hod';
+      renderHodDashboard();
+      switchView('hod-dashboard');
+    }
+
+    function renderHodDashboard() {
+      // Summary cards
+      const summaryGrid = document.getElementById('hodClassSummaryGrid');
+      summaryGrid.innerHTML = Object.keys(db.classes).map(clsKey => {
+        const stCount = db.classes[clsKey].students.length;
+        return `
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+            <span class="text-xs text-slate-500 font-bold block mb-1">${clsKey}</span>
+            <span class="text-2xl font-black text-blue-700">${stCount}</span>
+            <span class="text-[10px] text-slate-400 block mt-1">සිසුන් සංඛ්‍යාව</span>
+          </div>
+        `;
+      }).join('');
+
+      // All students table
+      const tbody = document.getElementById('hodAllStudentsTableBody');
+      let allSts = [];
+      Object.keys(db.classes).forEach(clsKey => {
+        db.classes[clsKey].students.forEach(s => {
+          allSts.push({ cls: clsKey, ...s });
+        });
+      });
+
+      if (allSts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">පද්ධතියේ සිසුන් නොමැත.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = allSts.map(s => `
+        <tr class="border-b hover:bg-slate-50">
+          <td class="p-3 font-bold text-amber-700">${s.cls}</td>
+          <td class="p-3 font-bold text-blue-700">${s.regNo}</td>
+          <td class="p-3">${s.name}</td>
+          <td class="p-3 text-right">
+            <button onclick="confirmDeleteStudent('${s.cls}', '${s.regNo}')" class="px-2.5 py-1 text-[11px] bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded transition">
+              <i class="fa-solid fa-trash-can"></i> ඉවත් කරන්න
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function handleHodGlobalAnnouncement(e) {
+      e.preventDefault();
+      const title = document.getElementById('hodAncTitle').value.trim();
+      const msg = document.getElementById('hodAncMsg').value.trim();
+
+      const ancObj = { id: Date.now(), title: `[අංශ ප්‍රධාන] ${title}`, msg, date: new Date().toISOString().split('T')[0] };
+
+      Object.keys(db.classes).forEach(c => {
+        if (!db.classes[c].announcements) db.classes[c].announcements = [];
+        db.classes[c].announcements.push(ancObj);
+      });
+
+      saveDatabase();
+      document.getElementById('hodAncTitle').value = '';
+      document.getElementById('hodAncMsg').value = '';
+      alert('සියලුම පන්ති සඳහා දැන්වීම සාර්ථකව නිකුත් කෙරිණි!');
+    }
+
+    function logoutHod() {
+      activeRole = 'guest';
+      switchView('landing');
+    }
+
+    // --- 4. PASSWORD CHANGE SYSTEM ---
+    function openChangePasswordModal(role) {
+      pendingRoleForPassChange = role;
+      document.getElementById('newPasswordInput').value = '';
+      document.getElementById('modalChangePassword').classList.remove('hidden');
+    }
+
+    function handleChangePassword(e) {
+      e.preventDefault();
+      const newP = document.getElementById('newPasswordInput').value.trim();
+      if (pendingRoleForPassChange === 'teacher') {
+        db.teachersPass = newP;
+      } else if (pendingRoleForPassChange === 'hod') {
+        db.hodPass = newP;
+      }
+      saveDatabase();
+      closeModal('modalChangePassword');
+      alert('මුරපදය සාර්ථකව වෙනස් විය!');
+    }
+
+    // --- 5. SYSTEM-WIDE WIPE CONTROLLER ---
+    function confirmWipeAllData(role) {
+      const confirm1 = confirm('ඔබට සියලුම දත්ත සම්පූර්ණයෙන්ම මකා දැමීමට විශ්වාසද?');
+      if (confirm1) {
+        const confirm2 = confirm('අවධානයයි: මෙය ආපසු හැරවිය නොහැක! සියලුම සිසුන්, ලකුණු, පැමිණීම්, පාඩම් සහ දැන්වීම් පද්ධතියෙන්ම ඉවත් වේ. ඉදිරියට යන්නේද?');
+        if (confirm2) {
+          db.classes = {
+            '12-C1': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] },
+            '12-C2': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] },
+            '12-C3': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] },
+            '13-C1': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] },
+            '13-C2': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] },
+            '13-C3': { students: [], scores: {}, attendance: {}, lessons: [], polls: [], zoom: [], announcements: [] }
+          };
+          saveDatabase();
+          alert('සියලුම දත්ත පද්ධතියෙන් සාර්ථකව මකා දමන ලදී.');
+          if (role === 'teacher') renderTeacherDashboard();
+          if (role === 'hod') renderHodDashboard();
+        }
+      }
+    }
+
+    function confirmWipeStudentsOnly() {
+      if (confirm(`ඔබට ${currentTeacherClass} පන්තියේ සිසුන්ගේ නම් ලැයිස්තුව පමණක් සම්පූර්ණයෙන්ම මකා දැමීමට විශ්වාසද?`)) {
+        const clsData = db.classes[currentTeacherClass];
+        clsData.students = [];
+        clsData.scores = {};
+        clsData.attendance = {};
+        saveDatabase();
+        renderTeacherStudentsTable();
+        renderTeacherScoresTable();
+        renderTeacherAttendanceTable();
+        alert('නම් ලැයිස්තුව මකා දමන ලදී.');
+      }
+    }
+
+    // --- 6. PDF GENERATOR ---
+    function openPdfModal() {
+      document.getElementById('modalPdfReports').classList.remove('hidden');
+    }
+
+    function generatePdf(type) {
+      closeModal('modalPdfReports');
+      const container = document.getElementById('pdfRenderTemplate');
+      const clsData = db.classes[currentStudent.cls];
+      const stScores = clsData.scores[currentStudent.regNo] || {};
+
+      let bodyHtml = '';
+      if (type === 'progress' || type === 'marks') {
+        bodyHtml = `
+          <h2 style="font-size:18px; font-weight:bold; margin-bottom:10px; color:#1e3a8a;">ලකුණු & ප්‍රගති වාර්තාව</h2>
+          <table style="width:100%; border-collapse:collapse; font-size:12px;" border="1" cellpadding="6">
+            <tr style="background:#f1f5f9;"><th>විෂය</th><th>MCQ</th><th>Essay</th><th>එකතුව</th><th>ශ්‍රේණිය</th></tr>
+            ${['Account','BS','Econ','IT'].map(sub => {
+              const sc = stScores[sub] || { mcq:0, essay:0 };
+              const tot = sc.mcq + sc.essay;
+              return `<tr><td>${sub}</td><td>${sc.mcq}</td><td>${sc.essay}</td><td>${tot}</td><td>${calculateGrade(tot)}</td></tr>`;
+            }).join('')}
+          </table>
+        `;
+      } else if (type === 'attendance') {
+        const att = (clsData.attendance && clsData.attendance[currentStudent.regNo]) || { present: 0, absent: 0 };
+        bodyHtml = `
+          <h2 style="font-size:18px; font-weight:bold; margin-bottom:10px; color:#1e3a8a;">පැමිණීමේ වාර්තාව</h2>
+          <p style="font-size:12px;">පැමිණි දින ගණන: <b>${att.present}</b></p>
+          <p style="font-size:12px;">නොපැමිණි දින ගණන: <b>${att.absent}</b></p>
+        `;
+      } else {
+        bodyHtml = `<p>විෂය සංසන්දනාත්මක සවිස්තරාත්මක වාර්තාව.</p>`;
+      }
+
+      container.innerHTML = `
+        <div style="padding:20px;">
+          <h1 style="font-size:22px; font-weight:bold; color:#1e3a8a;">කොමස් ගෲප් - Commerce Hub Portal</h1>
+          <p style="font-size:12px; border-bottom:1px solid #ccc; padding-bottom:5px;">නම: ${currentStudent.name} | රෙජිස්ටර් අංකය: ${currentStudent.regNo} | පන්තිය: ${currentStudent.cls}</p>
+          <br>
+          ${bodyHtml}
+        </div>
+      `;
+
+      const opt = {
+        margin:       0.5,
+        filename:     `${currentStudent.regNo}_Report.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(container).save();
+    }
+
+    // INITIALIZATION ON LOAD
+    document.getElementById('footerYear').innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
